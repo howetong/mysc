@@ -20,7 +20,6 @@ class TestController {
 
     @RequestMapping("/from")
     public String from() {
-        System.out.println(key);
         return this.from;
     }
 }

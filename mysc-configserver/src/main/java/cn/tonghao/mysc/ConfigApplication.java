@@ -2,11 +2,13 @@ package cn.tonghao.mysc;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.config.server.EnableConfigServer;
 
 /**
  * Created by howetong on 2017/9/18.
  */
+@EnableDiscoveryClient
 @EnableConfigServer
 @SpringBootApplication
 public class ConfigApplication {
