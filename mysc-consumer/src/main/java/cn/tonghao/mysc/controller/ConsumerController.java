@@ -1,9 +1,8 @@
 package cn.tonghao.mysc.controller;
 
-import cn.tonghao.mysc.service.ComputeService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -15,19 +14,17 @@ import javax.annotation.Resource;
 @RestController
 public class ConsumerController {
 
-//    @Autowired
-//    RestTemplate restTemplate;
-//
-//    @RequestMapping(value = "/add", method = RequestMethod.GET)
-//    public String add() {
-//        return restTemplate.getForEntity("http://COMPUTE-SERVICE/add?a=10&b=20", String.class).getBody();
-//    }
+    @Resource
+    LoadBalancerClient loadBalancerClient;
 
     @Resource
-    private ComputeService computeService;
+    RestTemplate restTemplate;
 
-    @RequestMapping(value = "/add", method = RequestMethod.GET)
-    public String add() {
-        return computeService.addService();
-    }
+   @GetMapping("/consumer")
+    public String dc() {
+       ServiceInstance serviceInstance = loadBalancerClient.choose("consul-provider1");
+       String url = "http://" + serviceInstance.getHost()+ ":" + serviceInstance.getPort() + "/dc";
+       System.out.println(url);
+       return restTemplate.getForObject(url, String.class);
+   }
 }
