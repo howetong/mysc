@@ -20,7 +20,7 @@ public class ConsumerController {
     @Resource
     RestTemplate restTemplate;
 
-   @GetMapping("/consumer")
+    @GetMapping("/consumer")
     public String dc() {
        ServiceInstance serviceInstance = loadBalancerClient.choose("consul-provider1");
        String url = "http://" + serviceInstance.getHost()+ ":" + serviceInstance.getPort() + "/dc";
